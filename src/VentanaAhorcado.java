@@ -6,6 +6,8 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 /*
@@ -62,6 +64,8 @@ public class VentanaAhorcado extends javax.swing.JFrame {
         palabraOculta = palabrasOcultas[palabra.nextInt(10)];
         //Adaptamos la palabra con sus respectivos guiones
         adaptaPalabra();
+        cambiaImagenAhorcado();
+        System.out.println(palabraOculta);
     }
 
     /*
@@ -78,54 +82,25 @@ public class VentanaAhorcado extends javax.swing.JFrame {
             jLabel1.setText(jLabel1.getText() + "_ ");
         }
     }
-
-    @Override
-    public void paint(Graphics g) {
-        super.paint(g);
-        //Indicamos que vamos a dibujar en el panel
-        g = jPanel1.getGraphics();
-        Image imagen = null;
-        try {
-            //Cargamos las imágenes
-            /*
-            En función del momento del juego en el que estemos
-            se nos cargará una imagen u otra en el panel central
-            En caso de perder saldrá el muñeco ahorcado, y en
-            caso de ganar saldrá la imagen de la victoria.
-            */
-            switch (numeroFallos) {
-                case 0:
-                    imagen = ImageIO.read(getClass().getResource("/ahorcado_0.png"));
-                    break;
-                case 1:
-                    imagen = ImageIO.read(getClass().getResource("/ahorcado_1.png"));
-                    break;
-                case 2:
-                    imagen = ImageIO.read(getClass().getResource("/ahorcado_2.png"));
-                    break;
-                case 3:
-                    imagen = ImageIO.read(getClass().getResource("/ahorcado_3.png"));
-                    break;
-                case 4:
-                    imagen = ImageIO.read(getClass().getResource("/ahorcado_4.png"));
-                    break;
-                case 5:
-                    imagen = ImageIO.read(getClass().getResource("/ahorcado_5.png"));
-                    break;
-                case -100:
-                    imagen = ImageIO.read(getClass().getResource("/acertasteTodo.png"));
-                    break;
-                default:
-                    imagen = ImageIO.read(getClass().getResource("/ahorcado_fin.png"));
-                    break;
+    
+    private void cambiaImagenAhorcado(){
+        String nombreImagen = "";
+        switch (numeroFallos) {
+                case 0: nombreImagen ="/ahorcado_0.png"; break;
+                case 1: nombreImagen = "/ahorcado_1.png"; break;
+                case 2: nombreImagen = "/ahorcado_2.png"; break;
+                case 3: nombreImagen = "/ahorcado_3.png"; break;
+                case 4: nombreImagen = "/ahorcado_4.png"; break;
+                case 5: nombreImagen = "/ahorcado_5.png"; break;
+                case -100: nombreImagen = "/acertasteTodo.png"; break;
+                default: nombreImagen = "/ahorcado_fin.png"; break;
             }
-        } catch (IOException ex) {
-            Logger.getLogger(VentanaAhorcado.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        //Dibujamos la imagen añadida en el jPanel
-        g.drawImage(imagen, 0, 0, jPanel1.getWidth(), jPanel1.getHeight(), null);
+        ImageIcon imagen = new ImageIcon(getClass().getResource(nombreImagen));
+        ImageIcon icono = new ImageIcon(imagen.getImage().getScaledInstance(jLabel2.getWidth(),
+                     jLabel2.getHeight(), Image.SCALE_DEFAULT));
+        jLabel2.setIcon(icono);
     }
-
+    
     private void chequeaLetra(JButton boton) {
         //Mientras no haya acabado la partida ejecutamos todo el if()
         if (partidaTerminada == false) {
@@ -197,7 +172,7 @@ public class VentanaAhorcado extends javax.swing.JFrame {
                     }
                 }
                 //Iremos cambiando la imagen en caso de ir fallando
-                repaint();
+                cambiaImagenAhorcado();
 
                 //Si alcanzamos el final establecemos las letras usadas
                 //Indicamos abajo que ha terminado la partida
@@ -221,7 +196,7 @@ public class VentanaAhorcado extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
@@ -263,20 +238,12 @@ public class VentanaAhorcado extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Monaco", 0, 36)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("_ _ _ _ _");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 6, 351, 45));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 351, 45));
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 198, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 198, Short.MAX_VALUE)
-        );
-
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(84, 69, -1, -1));
+        jLabel2.setMaximumSize(new java.awt.Dimension(198, 198));
+        jLabel2.setMinimumSize(new java.awt.Dimension(198, 198));
+        jLabel2.setPreferredSize(new java.awt.Dimension(198, 198));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 70, -1, -1));
 
         jButton1.setText("A");
         jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -714,7 +681,7 @@ public class VentanaAhorcado extends javax.swing.JFrame {
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel letrasPulsadas;
     private javax.swing.JLabel letrasUtilizadas;
     private javax.swing.JLabel resultadoFallos;
