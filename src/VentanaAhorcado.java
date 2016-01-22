@@ -61,11 +61,12 @@ public class VentanaAhorcado extends javax.swing.JFrame {
         //Hacemos un random para que elija la palabra al azar
         Random palabra = new Random();
         //Establecemos esa palabra como palabra oculta
-        palabraOculta = palabrasOcultas[palabra.nextInt(10)];
+        palabraOculta = palabrasOcultas[palabra.nextInt(palabrasOcultas.length)];
         //Adaptamos la palabra con sus respectivos guiones
         adaptaPalabra();
         cambiaImagenAhorcado();
-        System.out.println(palabraOculta);
+        //Añado un System.out.println para ver por consola la plabra que ha salido
+        //System.out.println(palabraOculta);
     }
 
     /*
