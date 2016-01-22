@@ -60,13 +60,14 @@ public class VentanaAhorcado extends javax.swing.JFrame {
         palabrasOcultas[9] = "PC";
         //Hacemos un random para que elija la palabra al azar
         Random palabra = new Random();
-        //Establecemos esa palabra como palabra oculta
-        palabraOculta = palabrasOcultas[palabra.nextInt(palabrasOcultas.length)];
+        //Establecemos esa palabra como palabra oculta y le decimos
+        //que selccione esa palabra en función de su posición.
+        palabraOculta = palabrasOcultas[palabra.nextInt(9)];
         //Adaptamos la palabra con sus respectivos guiones
         adaptaPalabra();
         cambiaImagenAhorcado();
         //Añado un System.out.println para ver por consola la plabra que ha salido
-        //System.out.println(palabraOculta);
+        System.out.println(palabraOculta);
     }
 
     /*
@@ -231,8 +232,9 @@ public class VentanaAhorcado extends javax.swing.JFrame {
         letrasPulsadas = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(365, 680));
-        setPreferredSize(new java.awt.Dimension(365, 680));
+        setMaximumSize(new java.awt.Dimension(365, 700));
+        setMinimumSize(new java.awt.Dimension(365, 700));
+        setPreferredSize(new java.awt.Dimension(365, 700));
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
