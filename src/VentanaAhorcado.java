@@ -48,11 +48,11 @@ public class VentanaAhorcado extends javax.swing.JFrame {
     public VentanaAhorcado() {
         initComponents();
         //Aquí va el codigo que metíamos en el run de ACM
+        cambiaImagenAhorcado();
         //Inicializamos las palabras del Array
         eligePalabraOculta();
         //Adaptamos la palabra con sus respectivos guiones
         adaptaPalabra();
-        cambiaImagenAhorcado();
         //Añado un System.out.println para ver por consola la plabra que ha salido
         //System.out.println(palabraOculta);
     }
@@ -63,24 +63,27 @@ public class VentanaAhorcado extends javax.swing.JFrame {
         File fichero = null;
         FileReader fr = null;
         BufferedReader br = null;
-        
+        Random palabra = new Random();
         fichero = new File("src/lemario.txt");
         String linea = "";
         try {
             fr = new FileReader(fichero);
             br = new BufferedReader(fr);
+            
             int numeroPalabrasFichero = 0;
-            //Hacemos un random para que elija la palabra al azar
-            Random palabra = new Random();
+            
             while ((linea = br.readLine()) != null ){
                 //BAD IDEA jTextArea1.append(linea);
                 numeroPalabrasFichero++;
             }
+            //System.out.println(numeroPalabrasFichero);
             int lineaEscogida = palabra.nextInt(numeroPalabrasFichero);
             System.out.println(lineaEscogida);
+            
             fr.close();
             fr = new FileReader(fichero);
             br = new BufferedReader(fr);
+            
             for (int i=0; i<lineaEscogida; i++){
                 linea = br.readLine();
             }
@@ -92,6 +95,10 @@ public class VentanaAhorcado extends javax.swing.JFrame {
             
         }
         palabraOculta = linea;
+        
+        //Falta revisar las palabras con tilde o con guion
+        //Falta revisar palabras con espacios en blanco
+        //Falta escribir la palabra si has perdido
         
         /*palabrasOcultas[0] = "CETYS";
         palabrasOcultas[1] = "DAM";
@@ -147,7 +154,7 @@ public class VentanaAhorcado extends javax.swing.JFrame {
             //Si el botón está activo, al pulsarlo identificará la letra
             if (boton.isEnabled()) {
                 //Declaramos que la letra sea la del botón pulsado
-                String letra = boton.getText();
+                String letra = boton.getText().toLowerCase();
                 //Desactivamos el botón pulsado
                 boton.setEnabled(false);
                 //Le decimos que la palabra secreta sea almacenada
