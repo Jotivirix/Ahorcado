@@ -1,12 +1,13 @@
 
-import java.awt.Graphics;
 import java.awt.Image;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.imageio.ImageIO;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
@@ -28,9 +29,9 @@ public class VentanaAhorcado extends javax.swing.JFrame {
     3- Que se pinte de forma automática los guiones en función del nº de letras
         que tenga la palabra oculta seleccionada.
      */
-    String[] palabrasOcultas = new String[10];
+    //String[] palabrasOcultas = new String[10];
 
-    String palabraOculta = "CETYS";
+    String palabraOculta = "";
 
     //Contador numero de fallos
     int numeroFallos = 0;
@@ -48,7 +49,51 @@ public class VentanaAhorcado extends javax.swing.JFrame {
         initComponents();
         //Aquí va el codigo que metíamos en el run de ACM
         //Inicializamos las palabras del Array
-        palabrasOcultas[0] = "CETYS";
+        eligePalabraOculta();
+        //Adaptamos la palabra con sus respectivos guiones
+        adaptaPalabra();
+        cambiaImagenAhorcado();
+        //Añado un System.out.println para ver por consola la plabra que ha salido
+        //System.out.println(palabraOculta);
+    }
+    
+    private void eligePalabraOculta(){
+        
+        //Método básico de lectura de ficheros en Java
+        File fichero = null;
+        FileReader fr = null;
+        BufferedReader br = null;
+        
+        fichero = new File("src/lemario.txt");
+        String linea = "";
+        try {
+            fr = new FileReader(fichero);
+            br = new BufferedReader(fr);
+            int numeroPalabrasFichero = 0;
+            //Hacemos un random para que elija la palabra al azar
+            Random palabra = new Random();
+            while ((linea = br.readLine()) != null ){
+                //BAD IDEA jTextArea1.append(linea);
+                numeroPalabrasFichero++;
+            }
+            int lineaEscogida = palabra.nextInt(numeroPalabrasFichero);
+            System.out.println(lineaEscogida);
+            fr.close();
+            fr = new FileReader(fichero);
+            br = new BufferedReader(fr);
+            for (int i=0; i<lineaEscogida; i++){
+                linea = br.readLine();
+            }
+            System.out.println(linea);
+            
+        } catch (FileNotFoundException ex) {
+            
+        } catch (IOException ex) {
+            
+        }
+        palabraOculta = linea;
+        
+        /*palabrasOcultas[0] = "CETYS";
         palabrasOcultas[1] = "DAM";
         palabrasOcultas[2] = "UFV";
         palabrasOcultas[3] = "JAVA";
@@ -58,16 +103,9 @@ public class VentanaAhorcado extends javax.swing.JFrame {
         palabrasOcultas[7] = "ECLIPSE";
         palabrasOcultas[8] = "RUN";
         palabrasOcultas[9] = "PC";
-        //Hacemos un random para que elija la palabra al azar
-        Random palabra = new Random();
+        */
         //Establecemos esa palabra como palabra oculta y le decimos
         //que selccione esa palabra en función de su posición.
-        palabraOculta = palabrasOcultas[palabra.nextInt(9)];
-        //Adaptamos la palabra con sus respectivos guiones
-        adaptaPalabra();
-        cambiaImagenAhorcado();
-        //Añado un System.out.println para ver por consola la plabra que ha salido
-        System.out.println(palabraOculta);
     }
 
     /*
@@ -141,10 +179,10 @@ public class VentanaAhorcado extends javax.swing.JFrame {
                     //alguna manera
                     if (!palabraSecreta.contains("_")) {
                         numeroFallos = -100;      //Este es el caso que carga la imagen de ganador
-                        resultadoJuego.setText("HA GANADO. ENHORABUENA");
-                        if (numeroFallos == 0) {
+                        resultadoFallos.setText("HA GANADO. ENHORABUENA");
+                        /*if (numeroFallos == 0) {
                             resultadoFallos.setText("NINGÚN FALLO");
-                        }
+                        }*/
                         if (numeroFallos == 1) {
                             resultadoFallos.setText("Ha acumulado: " + numeroFallos + " fallo");
                         } else if (numeroFallos >= 2 && numeroFallos < 6) {
@@ -180,8 +218,8 @@ public class VentanaAhorcado extends javax.swing.JFrame {
                 //Indicamos abajo que ha terminado la partida
                 //Establecemos la partida como terminada
                 if (numeroFallos == maximosFallos) {
-                    resultadoFallos.setText(numeroFallos + " fallos");
-                    resultadoJuego.setText("AHORCADO! HA PERDIDO");
+                    //resultadoFallos.setText(numeroFallos + " fallos");
+                    resultadoFallos.setText("AHORCADO! HA PERDIDO");
                     partidaTerminada = true;
                 }
             }
@@ -227,14 +265,15 @@ public class VentanaAhorcado extends javax.swing.JFrame {
         jButton26 = new javax.swing.JButton();
         jButton27 = new javax.swing.JButton();
         letrasUtilizadas = new javax.swing.JLabel();
-        resultadoJuego = new javax.swing.JLabel();
-        resultadoFallos = new javax.swing.JLabel();
         letrasPulsadas = new javax.swing.JLabel();
+        resultadoFallos = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(365, 700));
-        setMinimumSize(new java.awt.Dimension(365, 700));
-        setPreferredSize(new java.awt.Dimension(365, 700));
+        setMaximumSize(new java.awt.Dimension(365, 720));
+        setMinimumSize(new java.awt.Dimension(365, 720));
+        setPreferredSize(new java.awt.Dimension(365, 720));
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -467,20 +506,21 @@ public class VentanaAhorcado extends javax.swing.JFrame {
         letrasUtilizadas.setFont(new java.awt.Font("Lucida Grande", 1, 24)); // NOI18N
         letrasUtilizadas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         letrasUtilizadas.setText("LETRAS UTILIZADAS");
-        getContentPane().add(letrasUtilizadas, new org.netbeans.lib.awtextra.AbsoluteConstraints(7, 495, 350, -1));
-
-        resultadoJuego.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
-        resultadoJuego.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        resultadoJuego.setPreferredSize(new java.awt.Dimension(350, 30));
-        getContentPane().add(resultadoJuego, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 620, 360, 30));
-
-        resultadoFallos.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
-        resultadoFallos.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        getContentPane().add(resultadoFallos, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 580, 360, 30));
+        getContentPane().add(letrasUtilizadas, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 490, 350, -1));
 
         letrasPulsadas.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
         letrasPulsadas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        getContentPane().add(letrasPulsadas, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 540, 360, 30));
+        getContentPane().add(letrasPulsadas, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 520, 360, 30));
+
+        resultadoFallos.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
+        resultadoFallos.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        getContentPane().add(resultadoFallos, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 560, 360, 30));
+
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane1.setViewportView(jTextArea1);
+
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 590, 350, 100));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -685,9 +725,10 @@ public class VentanaAhorcado extends javax.swing.JFrame {
     private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JLabel letrasPulsadas;
     private javax.swing.JLabel letrasUtilizadas;
     private javax.swing.JLabel resultadoFallos;
-    private javax.swing.JLabel resultadoJuego;
     // End of variables declaration//GEN-END:variables
 }
